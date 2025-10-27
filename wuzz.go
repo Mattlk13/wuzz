@@ -28,9 +28,8 @@ import (
 	"github.com/asciimoo/wuzz/formatter"
 
 	"github.com/alessio/shellescape"
-	"github.com/jroimartin/gocui"
+	"github.com/awesome-gocui/gocui"
 	"github.com/mattn/go-runewidth"
-	"github.com/nsf/termbox-go"
 )
 
 const VERSION = "0.5.0"
@@ -549,7 +548,8 @@ func setView(g *gocui.Gui, viewName string) (*gocui.View, error) {
 		position.x0.getCoordinate(maxX+1),
 		position.y0.getCoordinate(maxY+1),
 		position.x1.getCoordinate(maxX+1),
-		position.y1.getCoordinate(maxY+1))
+		position.y1.getCoordinate(maxY+1),
+		0)
 }
 
 func setViewProperties(v *gocui.View, name string) {
@@ -1198,7 +1198,7 @@ func (a *App) CreatePopupView(name string, width, height int, g *gocui.Gui) (v *
 	if width > maxX-4 {
 		width = maxX - 4
 	}
-	v, err = g.SetView(name, maxX/2-width/2-1, maxY/2-height/2-1, maxX/2+width/2, maxY/2+height/2+1)
+	v, err = g.SetView(name, maxX/2-width/2-1, maxY/2-height/2-1, maxX/2+width/2, maxY/2+height/2+1, 0)
 	if err != nil && err != gocui.ErrUnknownView {
 		return
 	}
@@ -1854,8 +1854,8 @@ func main() {
 	}
 	var g *gocui.Gui
 	var err error
-	for _, outputMode := range []gocui.OutputMode{gocui.Output256, gocui.OutputNormal, gocui.OutputMode(termbox.OutputGrayscale)} {
-		g, err = gocui.NewGui(outputMode)
+	for _, outputMode := range []gocui.OutputMode{gocui.Output256, gocui.OutputNormal} {
+		g, err = gocui.NewGui(outputMode, true)
 		if err == nil {
 			break
 		}
